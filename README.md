@@ -18,4 +18,6 @@ iii. Checking the effect of cortex and DBS on bursting behavior of STN.
 
 ***Since the simulation data are large (2.7 GB), and uploading files larger than 25MB is not possible, contact me to provide you with datasets, if you want to test the .m code.
 
+***meanactivity.m produces figure3, and comparecomplexity.m produces figure2.
+
 ***You can contact me if you have any questions and suggestions: atefeh.asadi.neu@gmail.com
