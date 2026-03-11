@@ -1,0 +1,330 @@
+########  STN Parameters  #######
+
+p vl=-60,vna=55.,vk=-80.,thetam=30,sigmam=15
+p gl=2.25,gna=37.5,gk=45,tn=1.,th=0.05
+p gahp=12.,gca=.5,vca=140.,k1=15.,eps=5e-05
+p kca=22.5,thetas=39.,sigmas=8.,xp=1.,i=0.
+p thetah=-39,sigmah=3.1,thetan=-32.,sigman=-8.
+p taun0=1,taun1=100.,thn=80.,sigmant=26.
+p tauh0=1,tauh1=500,thh=57.,sigmaht=3.,phi=.75
+p thetaa=-63.,sigmaa=-7.8,gt=.5,phir=.5
+p thetar=-67,sigmar=2.,taur0=7.1,taur1=17.5,thr=-68,sigmart=2.2
+p thetab=.25,sigmab=-.07
+p alpha=5,beta=1.,ab=-30.
+
+###############################
+
+p iapp=-1.27
+
+p gGtoS=0.89,vGtoS=-100
+p gGtoG=0.052,vGtoG=-100.
+p gStoG=0.019,vStoG=0,
+
+p taugs1=4,taugs2=1,taugs3=1.1
+p tausg1=2.3,tausg2=3
+
+#######  GPe Parameters  #######
+
+p gnag=120.,gkg=30.,gahpg=30.,gtg=.5,gcag=.1,glg=.1
+p vnag=55.,vkg=-80.,vcag=120.,vlg=-55.
+p thag=-57.,sigag=2.,thsg=-35.,sigsg=2.
+p thrg=-70.,sigrg=-2.,taurg=30.
+p thmg=-37.,sigmg=10.
+p thng=-50.,signg=14.
+p taun0g=.05,taun1g=.27,thngt=-40,sng=-12
+p thhg=-58,sighg=-12
+p tauh0g=.05,tauh1g=.27,thhgt=-40,shg=-12
+p k1g=30.,kcag=20.,epsg=0.0001
+p phig=1.,phing=.05,phihg=.05
+p alphag=2,betag=.08,abg=-20
+
+#######  CTX Parameters  ######
+
+p ars=0.02, brs=0.2, crs=-65, drs=2
+p afsi=0.02, bfsi=0.2, cfsi=-50, dfsi=1
+p gsynie=0.01, gsynei=0.04
+p thrs=-30, sigrs=8
+p thf=-36, sigf=5
+p alphar=5, betar=1, abr=-8
+p alphaf=2, betaf=0.08, abf=-35
+p Ithr=4, Ithf=2
+p abampa=-30, abnmda=-30
+
+p gampatoS=0.15, gnmdatoS=0.003
+
+p tauampa=5.6, taunmda=5.6
+
+####### DBS Parameters ######
+
+p f=130
+p amp=1.5
+p pw=0.06      
+p gap=0.01     
+p pwr=0.12     
+
+#######  STN Functions  #######
+
+sinf(v)=1./(1.+exp(-(v+thetas)/sigmas))
+minf(v)=1./(1.+exp(-(v+thetam)/sigmam))
+hinf(v)=1./(1.+exp((v-thetah)/sigmah))
+ninf(v)=1./(1.+exp((v-thetan)/sigman))
+taun(v)=taun0+taun1/(1+exp((v+thn)/sigmant))
+tauh(v)=tauh0+tauh1/(1+exp((v+thh)/sigmaht))
+rinf(v)=1/(1+exp((v-thetar)/sigmar))
+taur(v)=taur0+taur1/(1+exp((v+thr)/sigmart))
+ainf(v)=1/(1+exp((v-thetaa)/sigmaa))
+binf(r)=1/(1+exp((r-thetab)/sigmab))-1/(1+exp(-thetab/sigmab))
+
+####### GPe Functions  #######
+
+ainfg(v)=1/(1+exp(-(v-thag)/sigag))
+sinfg(v)=1/(1+exp(-(v-thsg)/sigsg))
+rinfg(v)=1/(1+exp(-(v-thrg)/sigrg))
+minfg(v)=1./(1.+exp(-(v-thmg)/sigmg))
+ninfg(v)=1./(1.+exp(-(v-thng)/signg))
+taung(v)=taun0g+taun1g/(1+exp(-(v-thngt)/sng))
+hinfg(v)=1./(1.+exp(-(v-thhg)/sighg))
+tauhg(v)=tauh0g+tauh1g/(1+exp(-(v-thhgt)/shg))
+
+####### STN Currents  #######
+
+il(v)=gl*(v-vl)
+ina(v,h)=gna*(minf(v))^3*h*(v-vna)
+ik(v,n)=gk*n^4*(v-vk)
+iahp(v,ca)=gahp*(v-vk)*ca/(ca+k1)
+ica(v)=gca*((sinf(v))^2)*(v-vca)
+it(v,r)=gt*(ainf(v)**3)*(binf(r)^2)*(v-vca)
+
+#############################
+
+isyn1=gGtoS*(delay(sg9,taugs2)+delay(sg10,taugs3)+delay(sg1,taugs1)+delay(sg2,taugs2)+delay(sg3,taugs2))*(v1-vGtoS)
+isyn2=gGtoS*(delay(sg10,taugs2)+delay(sg1,taugs3)+delay(sg2,taugs1)+delay(sg3,taugs2)+delay(sg4,taugs2))*(v2-vGtoS)
+isyn3=gGtoS*(delay(sg1,taugs2)+delay(sg2,taugs3)+delay(sg3,taugs1)+delay(sg4,taugs2)+delay(sg5,taugs2))*(v3-vGtoS)
+isyn4=gGtoS*(delay(sg2,taugs2)+delay(sg3,taugs3)+delay(sg4,taugs1)+delay(sg5,taugs2)+delay(sg6,taugs2))*(v4-vGtoS)
+isyn5=gGtoS*(delay(sg3,taugs2)+delay(sg4,taugs3)+delay(sg5,taugs1)+delay(sg6,taugs2)+delay(sg7,taugs2))*(v5-vGtoS)
+isyn6=gGtoS*(delay(sg4,taugs2)+delay(sg5,taugs3)+delay(sg6,taugs1)+delay(sg7,taugs2)+delay(sg8,taugs2))*(v6-vGtoS)
+isyn7=gGtoS*(delay(sg5,taugs2)+delay(sg6,taugs3)+delay(sg7,taugs1)+delay(sg8,taugs2)+delay(sg9,taugs2))*(v7-vGtoS)
+isyn8=gGtoS*(delay(sg6,taugs2)+delay(sg7,taugs3)+delay(sg8,taugs1)+delay(sg9,taugs2)+delay(sg10,taugs2))*(v8-vGtoS)
+isyn9=gGtoS*(delay(sg7,taugs2)+delay(sg8,taugs3)+delay(sg9,taugs1)+delay(sg10,taugs2)+delay(sg1,taugs2))*(v9-vGtoS)
+isyn10=gGtoS*(delay(sg8,taugs2)+delay(sg9,taugs3)+delay(sg10,taugs1)+delay(sg1,taugs2)+delay(sg2,taugs2))*(v10-vGtoS)
+
+#######  GPe Currents  #######
+
+itg(vg,rg)=gtg*(ainfg(vg)^3)*rg*(vg-vcag)
+inag(vg,hg)=gnag*(minfg(vg)^3)*hg*(vg-vnag)
+ikg(vg,ng)=gkg*(ng^4)*(vg-vkg)
+iahpg(vg,cag)=gahpg*(vg-vkg)*cag/(cag+k1g)
+icag(vg)=gcag*((sinfg(vg))^2)*(vg-vcag)
+ilg(vg)=glg*(vg-vlg)
+
+isyng1=gStoG*(delay(s10,tausg1)+delay(s1,tausg2)+delay(s2,tausg1))*(vg1-vStoG)
+isyng2=gStoG*(delay(s1,tausg1)+delay(s2,tausg2)+delay(s3,tausg1))*(vg2-vStoG)
+isyng3=gStoG*(delay(s2,tausg2)+delay(s3,tausg1)+delay(s4,tausg2))*(vg3-vStoG)
+isyng4=gStoG*(delay(s3,tausg1)+delay(s4,tausg2)+delay(s5,tausg1))*(vg4-vStoG)
+isyng5=gStoG*(delay(s4,tausg1)+delay(s5,tausg2)+delay(s6,tausg1))*(vg5-vStoG)
+isyng6=gStoG*(delay(s5,tausg1)+delay(s6,tausg2)+delay(s7,tausg1))*(vg6-vStoG)
+isyng7=gStoG*(delay(s6,tausg1)+delay(s7,tausg2)+delay(s8,tausg1))*(vg7-vStoG)
+isyng8=gStoG*(delay(s7,tausg2)+delay(s8,tausg1)+delay(s9,tausg2))*(vg8-vStoG)
+isyng9=gStoG*(delay(s8,tausg1)+delay(s9,tausg2)+delay(s10,tausg1))*(vg9-vStoG)
+isyng10=gStoG*(delay(s9,tausg1)+delay(s10,tausg1)+delay(s1,tausg1))*(vg10-vStoG)
+stot=sg1+sg2+sg3+sg4+sg5+sg6+sg7+sg8+sg9+sg10
+isyngg(vg,sg)=gGtoG*stot*(vg-vGtoG)
+
+#######  STN Equations  #######
+
+v[1..10]'=-(il(v[j])+ina(v[j],h[j])+ik(v[j],n[j])+iahp(v[j],ca[j])+ica(v[j])+it(v[j],r[j]))-isyn[j]-Isynampa[j]-Isynnmda[j]
+h[1..10]'=phi*( hinf(v[j])-h[j] )/tauh(v[j])
+n[1..10]'=phi*( ninf(v[j])-n[j] )/taun(v[j])
+r[1..10]'=phir*(rinf(v[j])-r[j])/taur(v[j])
+ca[1..10]'=phi*eps*(-ica(v[j])-it(v[j],r[j]) - kca*ca[j])
+s[1..10]'=alpha*(1-s[j])*sinf(v[j]+ab)-beta*s[j]
+
+#######  GPe Equations  #######
+
+vg[1..10]'= -(itg(vg[j],rg[j])+inag(vg[j],hg[j])+ikg(vg[j],ng[j])+iahpg(vg[j],cag[j])+icag(vg[j])+ilg(vg[j])) +iapp -isyngg(vg[j],stot)-isyng[j]
+ng[1..10]'= phing*(ninfg(vg[j])-ng[j])/taung(vg[j])
+hg[1..10]'= phihg*(hinfg(vg[j])-hg[j])/tauhg(vg[j])
+rg[1..10]'= phig*(rinfg(vg[j])-rg[j])/taurg
+cag[1..10]'=epsg*(-icag(vg[j])-itg(vg[j],rg[j]) - kcag*cag[j])
+sg[1..10]'=alphag*(1-sg[j])*sinfg(vg[j]+abg)-betag*sg[j]
+     
+#######  CTX Equations  #######
+
+vrs1' = 0.04*vrs1^2 + 5*vrs1 + 140 - urs1 - Isynie1 + Ithr
+vrs2' = 0.04*vrs2^2 + 5*vrs2 + 140 - urs2 - Isynie2 + Ithr
+vrs3' = 0.04*vrs3^2 + 5*vrs3 + 140 - urs3 - Isynie3 + Ithr
+vrs4' = 0.04*vrs4^2 + 5*vrs4 + 140 - urs4 - Isynie4 + Ithr
+vrs5' = 0.04*vrs5^2 + 5*vrs5 + 140 - urs5 - Isynie5 + Ithr
+vrs6' = 0.04*vrs6^2 + 5*vrs6 + 140 - urs6 - Isynie6 + Ithr
+vrs7' = 0.04*vrs7^2 + 5*vrs7 + 140 - urs7 - Isynie7 + Ithr
+vrs8' = 0.04*vrs8^2 + 5*vrs8 + 140 - urs8 - Isynie8 + Ithr
+vrs9' = 0.04*vrs9^2 + 5*vrs9 + 140 - urs9 - Isynie9 + Ithr
+vrs10' = 0.04*vrs10^2 + 5*vrs10 + 140 - urs10 - Isynie10 + Ithr
+
+urs1' = ars*(brs*vrs1-urs1)
+urs2' = ars*(brs*vrs2-urs2)
+urs3' = ars*(brs*vrs3-urs3)
+urs4' = ars*(brs*vrs4-urs4)
+urs5' = ars*(brs*vrs5-urs5)
+urs6' = ars*(brs*vrs6-urs6)
+urs7' = ars*(brs*vrs7-urs7)
+urs8' = ars*(brs*vrs8-urs8)
+urs9' = ars*(brs*vrs9-urs9)
+urs10' = ars*(brs*vrs10-urs10)
+
+global 1 vrs1-30 {vrs1=-50; urs1=urs1+drs}
+global 1 vrs2-30 {vrs2=-50; urs2=urs2+drs}
+global 1 vrs3-30 {vrs3=-50; urs3=urs3+drs}
+global 1 vrs4-30 {vrs4=-50; urs4=urs4+drs}
+global 1 vrs5-30 {vrs5=-50; urs5=urs5+drs}
+global 1 vrs6-30 {vrs6=-50; urs6=urs6+drs}
+global 1 vrs7-30 {vrs7=-50; urs7=urs7+drs}
+global 1 vrs8-30 {vrs8=-50; urs8=urs8+drs}
+global 1 vrs9-30 {vrs9=-50; urs9=urs9+drs}
+global 1 vrs10-30 {vrs10=-50; urs10=urs10+drs}
+
+# FSI neurons
+vfsi1' = 0.04*vfsi1^2 + 5*vfsi1 + 140 - ufsi1 - Isynei1 + Ithf
+vfsi2' = 0.04*vfsi2^2 + 5*vfsi2 + 140 - ufsi2 - Isynei2 + Ithf
+vfsi3' = 0.04*vfsi3^2 + 5*vfsi3 + 140 - ufsi3 - Isynei3 + Ithf
+vfsi4' = 0.04*vfsi4^2 + 5*vfsi4 + 140 - ufsi4 - Isynei4 + Ithf
+vfsi5' = 0.04*vfsi5^2 + 5*vfsi5 + 140 - ufsi5 - Isynei5 + Ithf
+vfsi6' = 0.04*vfsi6^2 + 5*vfsi6 + 140 - ufsi6 - Isynei6 + Ithf
+vfsi7' = 0.04*vfsi7^2 + 5*vfsi7 + 140 - ufsi7 - Isynei7 + Ithf
+vfsi8' = 0.04*vfsi8^2 + 5*vfsi8 + 140 - ufsi8 - Isynei8 + Ithf
+vfsi9' = 0.04*vfsi9^2 + 5*vfsi9 + 140 - ufsi9 - Isynei9 + Ithf
+vfsi10' = 0.04*vfsi10^2 + 5*vfsi10 + 140 - ufsi10 - Isynei10 + Ithf
+
+ufsi1' = afsi*(bfsi*vfsi1-ufsi1)
+ufsi2' = afsi*(bfsi*vfsi2-ufsi2)
+ufsi3' = afsi*(bfsi*vfsi3-ufsi3)
+ufsi4' = afsi*(bfsi*vfsi4-ufsi4)
+ufsi5' = afsi*(bfsi*vfsi5-ufsi5)
+ufsi6' = afsi*(bfsi*vfsi6-ufsi6)
+ufsi7' = afsi*(bfsi*vfsi7-ufsi7)
+ufsi8' = afsi*(bfsi*vfsi8-ufsi8)
+ufsi9' = afsi*(bfsi*vfsi9-ufsi9)
+ufsi10' = afsi*(bfsi*vfsi10-ufsi10)
+
+global 1 vfsi1-30 {vfsi1=-55; ufsi1=ufsi1+dfsi}
+global 1 vfsi2-30 {vfsi2=-55; ufsi2=ufsi2+dfsi}
+global 1 vfsi3-30 {vfsi3=-55; ufsi3=ufsi3+dfsi}
+global 1 vfsi4-30 {vfsi4=-55; ufsi4=ufsi4+dfsi}
+global 1 vfsi5-30 {vfsi5=-55; ufsi5=ufsi5+dfsi}
+global 1 vfsi6-30 {vfsi6=-55; ufsi6=ufsi6+dfsi}
+global 1 vfsi7-30 {vfsi7=-55; ufsi7=ufsi7+dfsi}
+global 1 vfsi8-30 {vfsi8=-55; ufsi8=ufsi8+dfsi}
+global 1 vfsi9-30 {vfsi9=-55; ufsi9=ufsi9+dfsi}
+global 1 vfsi10-30 {vfsi10=-55; ufsi10=ufsi10+dfsi}
+
+#######################################
+
+# Synaptic activation functions
+sinfie(v) = 1 / (1 + exp(-(v - thrs)/sigrs))
+sinfei(v) = 1 / (1 + exp(-(v - thf)/sigf))
+
+#synaptic activation function cortex-STN
+sinfampa(v) = 1 / (1 + exp(-(v + 20)/2))
+sinfnmda(v) = 1 / (1 + exp(-(v)/2))
+
+# Synaptic gating variables
+sie1' = alphar*(1-sie1)*sinfie(vfsi1+abr)-betar*sie1
+sie2' = alphar*(1-sie2)*sinfie(vfsi2+abr)-betar*sie2
+sie3' = alphar*(1-sie3)*sinfie(vfsi3+abr)-betar*sie3
+sie4' = alphar*(1-sie4)*sinfie(vfsi4+abr)-betar*sie4
+sie5' = alphar*(1-sie5)*sinfie(vfsi5+abr)-betar*sie5
+sie6' = alphar*(1-sie6)*sinfie(vfsi6+abr)-betar*sie6
+sie7' = alphar*(1-sie7)*sinfie(vfsi7+abr)-betar*sie7
+sie8' = alphar*(1-sie8)*sinfie(vfsi8+abr)-betar*sie8
+sie9' = alphar*(1-sie9)*sinfie(vfsi9+abr)-betar*sie9
+sie10' = alphar*(1-sie10)*sinfie(vfsi10+abr)-betar*sie10
+
+sei1' = alphaf*(1-sei1)*sinfei(vrs1+abf)-betaf*sei1
+sei2' = alphaf*(1-sei2)*sinfei(vrs2+abf)-betaf*sei2
+sei3' = alphaf*(1-sei3)*sinfei(vrs3+abf)-betaf*sei3
+sei4' = alphaf*(1-sei4)*sinfei(vrs4+abf)-betaf*sei4
+sei5' = alphaf*(1-sei5)*sinfei(vrs5+abf)-betaf*sei5
+sei6' = alphaf*(1-sei6)*sinfei(vrs6+abf)-betaf*sei6
+sei7' = alphaf*(1-sei7)*sinfei(vrs7+abf)-betaf*sei7
+sei8' = alphaf*(1-sei8)*sinfei(vrs8+abf)-betaf*sei8
+sei9' = alphaf*(1-sei9)*sinfei(vrs9+abf)-betaf*sei9
+sei10' = alphaf*(1-sei10)*sinfei(vrs10+abf)-betaf*sei10
+
+sampa1' = 2*(1-sampa1)*sinfampa(vrs1+abampa)-0.4*sampa1
+sampa2' = 2*(1-sampa2)*sinfampa(vrs2+abampa)-0.4*sampa2
+sampa3' = 2*(1-sampa3)*sinfampa(vrs3+abampa)-0.4*sampa3
+sampa4' = 2*(1-sampa4)*sinfampa(vrs4+abampa)-0.4*sampa4
+sampa5' = 2*(1-sampa5)*sinfampa(vrs5+abampa)-0.4*sampa5
+sampa6' = 2*(1-sampa6)*sinfampa(vrs6+abampa)-0.4*sampa6
+sampa7' = 2*(1-sampa7)*sinfampa(vrs7+abampa)-0.4*sampa7
+sampa8' = 2*(1-sampa8)*sinfampa(vrs8+abampa)-0.4*sampa8
+sampa9' = 2*(1-sampa9)*sinfampa(vrs9+abampa)-0.4*sampa9
+sampa10' = 2*(1-sampa10)*sinfampa(vrs10+abampa)-0.4*sampa10
+
+snmda1' = 0.5*(1-snmda1)*sinfnmda(vrs1+abnmda)-0.011*snmda1
+snmda2' = 0.5*(1-snmda2)*sinfnmda(vrs2+abnmda)-0.011*snmda2
+snmda3' = 0.5*(1-snmda3)*sinfnmda(vrs3+abnmda)-0.011*snmda3
+snmda4' = 0.5*(1-snmda4)*sinfnmda(vrs4+abnmda)-0.011*snmda4
+snmda5' = 0.5*(1-snmda5)*sinfnmda(vrs5+abnmda)-0.011*snmda5
+snmda6' = 0.5*(1-snmda6)*sinfnmda(vrs6+abnmda)-0.011*snmda6
+snmda7' = 0.5*(1-snmda7)*sinfnmda(vrs7+abnmda)-0.011*snmda7
+snmda8' = 0.5*(1-snmda8)*sinfnmda(vrs8+abnmda)-0.011*snmda8
+snmda9' = 0.5*(1-snmda9)*sinfnmda(vrs9+abnmda)-0.011*snmda9
+snmda10' = 0.5*(1-snmda10)*sinfnmda(vrs10+abnmda)-0.011*snmda10
+
+# Synaptic currents
+Isynie1 = gsynie * (sie1+sie2+sie10+sie9) * (vrs1+85) 
+Isynie2 = gsynie * (sie2+sie3+sie1+sie10) * (vrs2+85) 
+Isynie3 = gsynie * (sie3+sie4+sie1+sie2) * (vrs3+85)
+Isynie4 = gsynie * (sie4+sie5+sie3+sie2) * (vrs4+85)
+Isynie5 = gsynie * (sie5+sie6+sie4+sie3) * (vrs5+85)
+Isynie6 = gsynie * (sie6+sie7+sie5+sie4) * (vrs6+85)
+Isynie7 = gsynie * (sie7+sie8+sie6+sie5) * (vrs7+85)
+Isynie8 = gsynie * (sie8+sie9+sie7+sie6) * (vrs8+85)
+Isynie9 = gsynie * (sie9+sie10+sie8+sie7) * (vrs9+85)
+Isynie10 = gsynie * (sie10+sie1+sie9+sie8) * (vrs10+85)
+
+Isynei1 = gsynei * (sei1+sei2+sei10+sei9) * (vfsi1) 
+Isynei2 = gsynei * (sei2+sei3+sei1+sei10) * (vfsi2) 
+Isynei3 = gsynei * (sei3+sei4+sei1+sei2) * (vfsi3)
+Isynei4 = gsynei * (sei4+sei5+sei3+sei2) * (vfsi4)
+Isynei5 = gsynei * (sei5+sei6+sei4+sei3) * (vfsi5)
+Isynei6 = gsynei * (sei6+sei7+sei5+sei4) * (vfsi6)
+Isynei7 = gsynei * (sei7+sei8+sei6+sei5) * (vfsi7)
+Isynei8 = gsynei * (sei8+sei9+sei7+sei6) * (vfsi8)
+Isynei9 = gsynei * (sei9+sei10+sei8+sei7) * (vfsi9)
+Isynei10 = gsynei * (sei10+sei1+sei9+sei8) * (vfsi10)
+
+Isynampa1 = gampatoS * (delay(sampa1,tauampa)+delay(sampa10,tauampa)) * (v1)
+Isynampa2 = gampatoS * (delay(sampa2,tauampa)+delay(sampa9,tauampa)) * (v2)
+Isynampa3 = gampatoS * (delay(sampa3,tauampa)+delay(sampa8,tauampa)) * (v3)
+Isynampa4 = gampatoS * (delay(sampa4,tauampa)+delay(sampa7,tauampa)) * (v4)
+Isynampa5 = gampatoS * (delay(sampa5,tauampa)+delay(sampa6,tauampa)) * (v5)
+Isynampa6 = gampatoS * (delay(sampa6,tauampa)+delay(sampa5,tauampa)) * (v6)
+Isynampa7 = gampatoS * (delay(sampa7,tauampa)+delay(sampa4,tauampa)) * (v7)
+Isynampa8 = gampatoS * (delay(sampa8,tauampa)+delay(sampa3,tauampa)) * (v8)
+Isynampa9 = gampatoS * (delay(sampa9,tauampa)+delay(sampa2,tauampa)) * (v9)
+Isynampa10 = gampatoS * (delay(sampa10,tauampa)+delay(sampa1,tauampa)) * (v10)
+
+Isynnmda1 = gnmdatoS * (delay(snmda1,taunmda)+delay(snmda10,taunmda)) * (v1)
+Isynnmda2 = gnmdatoS * (delay(snmda2,taunmda)+delay(snmda9,taunmda)) * (v2)
+Isynnmda3 = gnmdatoS * (delay(snmda3,taunmda)+delay(snmda8,taunmda)) * (v3)
+Isynnmda4 = gnmdatoS * (delay(snmda4,taunmda)+delay(snmda7,taunmda)) * (v4)
+Isynnmda5 = gnmdatoS * (delay(snmda5,taunmda)+delay(snmda6,taunmda)) * (v5)
+Isynnmda6 = gnmdatoS * (delay(snmda6,taunmda)+delay(snmda5,taunmda)) * (v6)
+Isynnmda7 = gnmdatoS * (delay(snmda7,taunmda)+delay(snmda4,taunmda)) * (v7)
+Isynnmda8 = gnmdatoS * (delay(snmda8,taunmda)+delay(snmda3,taunmda)) * (v8)
+Isynnmda9 = gnmdatoS * (delay(snmda9,taunmda)+delay(snmda2,taunmda)) * (v9)
+Isynnmda10 = gnmdatoS * (delay(snmda10,taunmda)+delay(snmda1,taunmda)) * (v10)
+
+per(t) = 1000/f
+ph(t) = t - per(t)*flr(t/per(t))
+ampr = amp*pw/pwr
+
+cath(t) =  amp   * (heav(ph(t)) - heav(ph(t)-pw))
+anod(t) = -ampr * (heav(ph(t)-(pw+gap)) - heav(ph(t)-(pw+gap+pwr)))
+dbs(t) = cath(t) + anod(t)
+
+@ dt=.1,total=120000,meth=qulrk,xp=t,yp=v1,xlo=0,xhi=120000,ylo=-100,yhi=40.,bound=5000,@ delay=6
+
+done
